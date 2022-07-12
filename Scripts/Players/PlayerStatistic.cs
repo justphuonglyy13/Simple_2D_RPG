@@ -17,7 +17,13 @@ public class PlayerStatistic : MonoBehaviour
     private float _HP;
     public float HP { 
         get { return _HP; } 
-        set { _HP = value; } 
+        set { 
+            if (value >= 100) {
+                _HP = 100;
+            } else {
+                _HP = value;
+            }
+        } 
     }
 
     [SerializeField]
@@ -70,15 +76,15 @@ public class PlayerStatistic : MonoBehaviour
     }
 
     [SerializeField]
-    public PlayerStatistic() {
-        this.HP = 100;
-        this.Stamina = 100;
-        this.Attack = 5;
-        this.Defense = 5;
-        this.Speed = 5;
-        this.Gold = 0;
-        this.Exp = 0;
-        this.Level = 1;
+    public PlayerStatistic(float HP, float stamina, float attack, float defense, float speed, int level, int exp, int gold) {
+        this.HP = HP;
+        this.Stamina = stamina;
+        this.Attack = attack;
+        this.Defense = defense;
+        this.Speed = speed;
+        this.Level = level;
+        this.Exp = exp;
+        this.Gold = gold;
     }
 
     // Start is called before the first frame update

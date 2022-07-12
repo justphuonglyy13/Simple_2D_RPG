@@ -2,34 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : PlayerStatistic, PlayerAttack
+public class PlayerManager : Player, PlayerAction
 {
     // Static player which is initialized only once at the start of the game.
     public static PlayerManager player;
 
     // THE TRANSFORM OF THE PLAYER.
-    public Vector3 movement;
-    public Vector3 moveDirection;
+    private Vector3 movement;
+    private Vector3 moveDirection;
 
     // THE CURRENT STATE OF THE PLAYER.
-    public PLAYER_STATE currentPlayerState = PLAYER_STATE.Walk;
+    private PLAYER_STATE currentPlayerState = PLAYER_STATE.Walk;
 
     // GET OTHER COMPONENTS.
-    public Rigidbody2D myRigidBody;
-    public Animator myAnimator;
+    private Rigidbody2D myRigidBody;
+    private Animator myAnimator;
     private RaycastHit2D hit;
 
     // TIME ATTRIBUTES.
-    public float currentTime;   
+    [SerializeField]
+    private float currentTime;   
+    [SerializeField]
     private float dashAmount = 5f;
+    [SerializeField]
     private float dashCooldown = 3f;
+    [SerializeField]
     private float lastDashTime = 0f;
 
     // LOGICAL ATTRIBUTES TO CHECK WHETHER THE PLAYER IS TRYING TO DO SOMETHING OR NOT.
+    [SerializeField]
     private bool isDashButtonDown = false;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         player = this;
         myRigidBody = GetComponent<Rigidbody2D>();
@@ -37,7 +42,7 @@ public class PlayerManager : PlayerStatistic, PlayerAttack
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         // Calculate the current time using Time.time
         currentTime = Time.time;
@@ -69,7 +74,7 @@ public class PlayerManager : PlayerStatistic, PlayerAttack
     }
 
     // APPLY PHYSICAL MOVEMENT TO THE PLAYER
-    void FixedUpdate()
+    public void FixedUpdate()
     {
         if (this.currentPlayerState == PLAYER_STATE.Idle) {
             myRigidBody.velocity = Vector3.zero;
@@ -96,7 +101,8 @@ public class PlayerManager : PlayerStatistic, PlayerAttack
         }
     }
 
-    void MovingPlayer() {
+    // MOVING THE PLAYER USING KEYS ON THE KEYBOARD
+    public void MovingPlayer() {
         // Reset the 3D Vector movement
         movement = new Vector3();
 
@@ -129,7 +135,7 @@ public class PlayerManager : PlayerStatistic, PlayerAttack
     }
 
     // ANIMATE THE PLAYER
-    void AnimatingPlayer()
+    public void AnimatingPlayer()
     {
         if (moveDirection != Vector3.zero)
         {
@@ -143,7 +149,7 @@ public class PlayerManager : PlayerStatistic, PlayerAttack
         }
     }
 
-    // ATTACKING
+    // ATTACKING ANIMATION SIMULATOR
     public IEnumerator Attacking()
     {
         myAnimator.SetBool("isAttacking", true);
@@ -160,11 +166,12 @@ public class PlayerManager : PlayerStatistic, PlayerAttack
     // UPDATE THE LEVEL OF THE PLAYER
     public void LevelUp()
     {
-        if (this.Exp >= 5) {
-            this.Level++;
-            this.Exp -= 5;
+        int threshold = 10;
+        if (this.Exp >= 5 + (threshold * (this.Level - 1))) {
+            this.Exp -= 5 + (threshold * (this.Level - 1));
             this.HP += 2;
             this.Attack += 1;
+            this.Level++;
             Debug.Log("Level up! Now your level is " + this.Level);
         }
     }

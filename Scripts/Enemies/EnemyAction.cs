@@ -8,5 +8,5 @@ public interface EnemyAction
     public bool CheckingDistance();
     public void Attacking();
     public int SpecialAttacking();
-    public void CheckingHP();
+    public float CheckingHP();
 }
