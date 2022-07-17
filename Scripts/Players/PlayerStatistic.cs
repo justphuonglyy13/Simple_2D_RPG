@@ -8,7 +8,6 @@ public enum PLAYER_STATE
     Walk,
     Attack,
     Dash,
-    Invulnerable
 }
 
 public class PlayerStatistic : MonoBehaviour
@@ -26,12 +25,6 @@ public class PlayerStatistic : MonoBehaviour
         } 
     }
 
-    [SerializeField]
-    private float _stamina;
-    public float Stamina { 
-        get { return _stamina; } 
-        set { _stamina = value; } 
-    }
 
     [SerializeField]
     private float _attack;
@@ -68,23 +61,15 @@ public class PlayerStatistic : MonoBehaviour
         set { _exp = value; } 
     }
 
-    [SerializeField]
-    private int _gold;
-    public int Gold { 
-        get { return _gold; } 
-        set { _gold = value; } 
-    }
 
     [SerializeField]
-    public PlayerStatistic(float HP, float stamina, float attack, float defense, float speed, int level, int exp, int gold) {
+    public PlayerStatistic(float HP, float attack, float defense, float speed, int level, int exp) {
         this.HP = HP;
-        this.Stamina = stamina;
         this.Attack = attack;
         this.Defense = defense;
         this.Speed = speed;
         this.Level = level;
         this.Exp = exp;
-        this.Gold = gold;
     }
 
     // Start is called before the first frame update

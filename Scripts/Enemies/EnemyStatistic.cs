@@ -11,6 +11,8 @@ public enum ENEMY_STATE
 
 public class EnemyStatistic : MonoBehaviour
 {
+    public static float hardness;
+
     [SerializeField]
     private float _HP;
     public float HP
@@ -126,9 +128,16 @@ public class EnemyStatistic : MonoBehaviour
 
     public EnemyStatistic(float HP, float attack, float defense, float speed)
     {
-        this.HP = HP;
-        this.Attack = attack;
-        this.Defense = defense;
-        this.Speed = speed;
+        if (hardness != 0 ) {
+            this.HP = HP + (hardness * 5);
+            this.Attack = attack + hardness;
+            this.Defense = defense + (hardness - 1);
+            this.Speed = speed + (hardness - 1);
+        } else {
+            this.HP = HP;
+            this.Attack = attack;
+            this.Defense = defense;
+            this.Speed = speed;
+        }
     }
 }

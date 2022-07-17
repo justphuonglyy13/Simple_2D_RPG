@@ -9,4 +9,5 @@ public interface EnemyAction
     public void Attacking();
     public int SpecialAttacking();
     public float CheckingHP();
+    public void DropItems();
 }

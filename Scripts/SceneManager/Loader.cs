@@ -21,7 +21,11 @@ public class Loader : MonoBehaviour
         string clickedButton = EventSystem.current.currentSelectedGameObject.name;
         int selectedDifficulty = int.Parse(clickedButton);
 
-        SceneManager.LoadScene("Map1");
+        if (selectedDifficulty == 1) {
+            EnemyStatistic.hardness = 2f;
+        } else {
+            EnemyStatistic.hardness = 0f;
+        }
     }
 
     public void ChangingBetweenMaps() {

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerManager : Player, PlayerAction
 {
-    // Static player which is initialized only once at the start of the game.
-    public static PlayerManager player;
 
     // THE TRANSFORM OF THE PLAYER.
     private Vector3 movement;
@@ -21,7 +19,7 @@ public class PlayerManager : Player, PlayerAction
 
     // TIME ATTRIBUTES.
     [SerializeField]
-    private float currentTime;   
+    private float currentTime;
     [SerializeField]
     private float dashAmount = 5f;
     [SerializeField]
@@ -34,6 +32,11 @@ public class PlayerManager : Player, PlayerAction
     // LOGICAL ATTRIBUTES TO CHECK WHETHER THE PLAYER IS TRYING TO DO SOMETHING OR NOT.
     [SerializeField]
     private bool isDashButtonDown = false;
+
+    // Static player which is initialized only once at the start of the game.
+    public static PlayerManager player;
+    public GameObject deathPanelScreen;
+    public GameObject victoryPanelScreen;
 
     // Start is called before the first frame update
     public void Start()
@@ -56,9 +59,12 @@ public class PlayerManager : Player, PlayerAction
         if (Input.GetKeyDown(KeyCode.J) && currentPlayerState != PLAYER_STATE.Attack)
         {
             StartCoroutine(Attacking());
-        } else if (Input.GetKeyDown(KeyCode.L) && currentPlayerState != PLAYER_STATE.Attack) {
-            StartCoroutine(SpecialAttacking());    
-        } else if (currentPlayerState == PLAYER_STATE.Walk)
+        }
+        else if (Input.GetKeyDown(KeyCode.L) && currentPlayerState != PLAYER_STATE.Attack)
+        {
+            StartCoroutine(SpecialAttacking());
+        }
+        else if (currentPlayerState == PLAYER_STATE.Walk)
         {
             this.AnimatingPlayer();
         }
@@ -71,7 +77,7 @@ public class PlayerManager : Player, PlayerAction
         }
 
         //Updating the level of the player
-        this.LevelUp(); 
+        this.LevelUp();
 
         //Checking whether the HP of the player is 0
         this.CheckingHP();
@@ -80,9 +86,10 @@ public class PlayerManager : Player, PlayerAction
     // APPLY PHYSICAL MOVEMENT TO THE PLAYER
     public void FixedUpdate()
     {
-        if (this.currentPlayerState == PLAYER_STATE.Idle) {
+        if (this.currentPlayerState == PLAYER_STATE.Idle)
+        {
             myRigidBody.velocity = Vector3.zero;
-            return ;
+            return;
         }
 
         myRigidBody.velocity = moveDirection * this.Speed;
@@ -106,7 +113,8 @@ public class PlayerManager : Player, PlayerAction
     }
 
     // MOVING THE PLAYER USING KEYS ON THE KEYBOARD
-    public void MovingPlayer() {
+    public void MovingPlayer()
+    {
         // Reset the 3D Vector movement
         movement = new Vector3();
 
@@ -165,13 +173,14 @@ public class PlayerManager : Player, PlayerAction
         yield return new WaitForSeconds(.666667f);
 
         currentPlayerState = PLAYER_STATE.Walk;
-    } 
+    }
 
     // UPDATE THE LEVEL OF THE PLAYER
     public void LevelUp()
     {
         int threshold = 5;
-        if (this.Exp >= 5 + (threshold * (this.Level - 1))) {
+        if (this.Exp >= 5 + (threshold * (this.Level - 1)))
+        {
             this.Exp -= 5 + (threshold * (this.Level - 1));
             this.HP += 10;
             this.Attack += 1;
@@ -181,25 +190,51 @@ public class PlayerManager : Player, PlayerAction
     }
 
     // CHECK THE HEALTH POWER OF THE PLAYER
-    public void CheckingHP(){
-        if (this.HP <= 0) {
+    public void CheckingHP()
+    {
+        if (this.HP <= 0)
+        {  
             Destroy(this.gameObject);
             Debug.Log("GAME OVER!!!!!!");
         }
     }
 
-    public IEnumerator SpecialAttacking() {
-        if (currentTime - lastSpecialAttackingTime < 5f)  {
+    public IEnumerator SpecialAttacking()
+    {
+        if (currentTime - lastSpecialAttackingTime < 5f)
+        {
             yield break;
         }
+        float lastAtk = this.Attack;
+        this.Attack += 5;
         myAnimator.SetBool("isAttacking", true);
         currentPlayerState = PLAYER_STATE.Attack;
 
         yield return null;
         myAnimator.SetBool("isAttacking", false);
         yield return new WaitForSeconds(.6666667f);
+        this.Attack = lastAtk;
 
         currentPlayerState = PLAYER_STATE.Walk;
         lastSpecialAttackingTime = Time.time;
+    }
+
+    public void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("Award(Atk)"))
+        {
+            Debug.Log("Attack UP!");
+            Debug.Log("Attack: " + this.Attack);
+            Destroy(collider.gameObject);
+            this.Attack += 1;
+        } else if (collider.gameObject.CompareTag("Award(HP)")) {
+            Debug.Log("HP UP!");
+            Destroy(collider.gameObject);
+            this.HP += 7;
+        } else if (collider.gameObject.CompareTag("Award(Exp)")) {
+            Debug.Log("Exp UP!");
+            Destroy(collider.gameObject);
+            this.Exp += 5;
+        }
     }
 }

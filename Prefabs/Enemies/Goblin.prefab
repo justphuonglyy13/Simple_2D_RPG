@@ -502,4 +502,8 @@ MonoBehaviour:
   _HP: 20
   chaseRadius: 4
   attackRadius: 2
+  randomDroppedItems:
+  - {fileID: 5028059410001313509, guid: ac31092204c3b934cbcbdf2cd2d25fcb, type: 3}
+  - {fileID: 1868656472565406206, guid: e2fec1ee881a1164e92754c0ead44d12, type: 3}
+  - {fileID: 8488380801830213894, guid: f5004074bbba8a246bceb9cb2f87330e, type: 3}
   alreadyHasBeenCollided: 0

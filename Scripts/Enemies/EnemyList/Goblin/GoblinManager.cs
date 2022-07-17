@@ -8,6 +8,9 @@ public class GoblinManager : Goblin, EnemyAction
 
     private Animator goblinAnimator;
 
+    [SerializeField]
+    private GameObject[] randomDroppedItems;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -292,13 +295,24 @@ public class GoblinManager : Goblin, EnemyAction
 
             PlayerManager.player.Exp += 4;
 
-            Destroy(gameObject);
+            this.DropItems();
+            Destroy(this.gameObject);
 
             Debug.Log("You've got 4 EXP");
             Debug.Log(PlayerManager.player.Exp);
         }
 
         return this.HP;
+    }
+
+    //RANDOMLY DROP ITEM WHEN THE ENEMY IS DEAD
+    public void DropItems()
+    {
+        int drop = Random.Range(1, 101);
+        if (drop % (3 + (int) (EnemyStatistic.hardness * 7/2)) == 0)
+        {
+            Instantiate(this.randomDroppedItems[Random.Range(0, randomDroppedItems.Length)], this.transform.position, Quaternion.identity);
+        } 
     }
 }
 

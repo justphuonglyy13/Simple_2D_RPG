@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
 
     public void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
         if(scene.name == "Map1" && player == null) {
+            
             player = Instantiate(players[CharIndex]);
         }
     }

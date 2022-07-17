@@ -756,3 +756,5 @@ MonoBehaviour:
   dashCooldown: 3
   lastDashTime: 0
   isDashButtonDown: 0
+  deathPanelScreen: {fileID: 0}
+  victoryPanelScreen: {fileID: 0}
