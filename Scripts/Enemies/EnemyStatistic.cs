@@ -9,26 +9,15 @@ public enum ENEMY_STATE
     Attack,
 }
 
-public class EnemyStatistic : MonoBehaviour
+public abstract class EnemyStatistic : MonoBehaviour
 {
     public static float hardness;
 
-    [SerializeField]
     private float _HP;
     public float HP
     {
         get { return _HP; }
-        set
-        {
-            if (value >= 20f)
-            {
-                _HP = 20f;
-            }
-            else
-            {
-                _HP = value;
-            }
-        }
+        set { _HP = value; }    
     }
 
     private float _attack;
@@ -130,8 +119,8 @@ public class EnemyStatistic : MonoBehaviour
     {
         if (hardness != 0 ) {
             this.HP = HP + (hardness * 5);
-            this.Attack = attack + hardness;
-            this.Defense = defense + (hardness - 1);
+            this.Attack = attack + (hardness * 3);
+            this.Defense = defense + hardness;
             this.Speed = speed + (hardness - 1);
         } else {
             this.HP = HP;

@@ -31,18 +31,22 @@ public class WalkableTreeManager : WalkableTree, EnemyAction
             this.AutoMoving();
         }
 
-        if (this.CurrentTime - this.LastAttackingTime >= 0.3333334f) {
+        if (this.CurrentTime - this.LastAttackingTime >= 0.3333334f)
+        {
             alreadyHasBeenCollided = false;
         }
     }
 
     void FixedUpdate()
     {
-        if (alreadyHasBeenCollided == true) {
+        if (alreadyHasBeenCollided == true)
+        {
             enemyRigidBody.velocity = Vector2.zero;
             enemyRigidBody.AddForce(this.Difference * this.Thurst, ForceMode2D.Impulse);
             CanDealDamage = false;
-        } else {
+        }
+        else
+        {
             enemyRigidBody.velocity = this.MoveDirection * Speed;
         }
     }
@@ -188,10 +192,10 @@ public class WalkableTreeManager : WalkableTree, EnemyAction
                 alreadyHasBeenCollided = true;
                 this.Difference = new Vector2(transform.position.x - PlayerManager.player.transform.position.x, transform.position.y - PlayerManager.player.transform.position.y);
 
-                this.HP -= (PlayerManager.player.Attack - this.Defense);
+                this.HP -= (PlayerManager.player.Attack - this.Defense <= 0) ? 0 : PlayerManager.player.Attack - this.Defense;
                 Debug.Log("You've dealing [" + (PlayerManager.player.Attack - this.Defense) + "] DMG to the enemy!!!");
                 this.CheckingHP();
-                this.LastAttackingTime = Time.time;      
+                this.LastAttackingTime = Time.time;
             }
         }
     }
@@ -204,19 +208,26 @@ public class WalkableTreeManager : WalkableTree, EnemyAction
 
     public IEnumerator OnCollisionEnter2D(Collision2D collision)
     {
-            if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            CanDealDamage = true;
+            yield return new WaitForSeconds(2.125f);
+            if (Vector3.Distance(target.position, transform.position) <= this.AttackRadius && this.CanDealDamage == true)
             {
-                CanDealDamage = true;   
-                yield return new WaitForSeconds(2.125f);
-                if (Vector3.Distance(target.position, transform.position) <= this.AttackRadius && this.CanDealDamage == true)
-                {
-                    float dmgTaken = this.Attack - PlayerManager.player.Defense + this.SpecialAttacking();
-                    PlayerManager.player.HP -= dmgTaken;
+                float dmgTaken = this.Attack - PlayerManager.player.Defense + this.SpecialAttacking();
+                PlayerManager.player.HP -= ((dmgTaken <= 0) ? 0 : dmgTaken);
 
-                    Debug.Log("Player: - " + dmgTaken + "HP");
-                    this.LastAttackingTime = Time.time;
-                }
-            }    
+                Debug.Log("Player: - " + dmgTaken + "HP");
+                this.LastAttackingTime = Time.time;
+            }
+        }
+
+        if (collision.gameObject.CompareTag("Player Special Attack"))
+        {
+            this.HP -= (PlayerManager.player.Attack * 2 - this.Defense);
+            Debug.Log("You've dealing [" + (PlayerManager.player.Attack * 2 - this.Defense) + "] DMG to the enemy!!!");
+            this.CheckingHP();
+        }
     }
 
     // SPECIAL ATTACK PATTERN OF THE ENEMY
@@ -252,11 +263,12 @@ public class WalkableTreeManager : WalkableTree, EnemyAction
     }
 
     //RANDOMLY DROPING ITEMS WHEN THE ENEMY IS DEAD
-    public void DropItems() {
+    public void DropItems()
+    {
         int drop = Random.Range(1, 101);
-        if (drop % (2 + (int) (EnemyStatistic.hardness * 3/2)) == 0)
+        if (drop % (2 + (int)(EnemyStatistic.hardness * 3 / 2)) == 0)
         {
             Instantiate(this.randomDroppedItems[Random.Range(0, randomDroppedItems.Length)], this.transform.position, Quaternion.identity);
-        }        
+        }
     }
 }

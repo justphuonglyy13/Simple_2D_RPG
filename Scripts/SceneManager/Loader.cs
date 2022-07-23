@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class Loader : MonoBehaviour
 {
+    private Vector3 spawnPosition;
+
     public void SelectingPlayer()
     {
         string clickedButton = EventSystem.current.currentSelectedGameObject.name;
@@ -14,6 +16,7 @@ public class Loader : MonoBehaviour
         GameManager.instance.CharIndex = 0;
 
         SceneManager.LoadScene("Map1");
+        GameManager.player.transform.position = Vector3.zero; 
     }
 
     public void SelectingDifficulty()
@@ -26,9 +29,5 @@ public class Loader : MonoBehaviour
         } else {
             EnemyStatistic.hardness = 0f;
         }
-    }
-
-    public void ChangingBetweenMaps() {
-        
     }
 }

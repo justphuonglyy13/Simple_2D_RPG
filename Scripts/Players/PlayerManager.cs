@@ -13,11 +13,12 @@ public class PlayerManager : Player, PlayerAction
     private PLAYER_STATE currentPlayerState = PLAYER_STATE.Walk;
 
     // GET OTHER COMPONENTS.
-    protected Rigidbody2D myRigidBody;
+    private Rigidbody2D myRigidBody;
+    private CapsuleCollider2D myCapsuleCollider;
     private Animator myAnimator;
     private RaycastHit2D hit;
 
-    // TIME ATTRIBUTES.
+    // TIME ATTRIBUTES
     [SerializeField]
     private float currentTime;
     [SerializeField]
@@ -29,20 +30,26 @@ public class PlayerManager : Player, PlayerAction
     //[SerializeField]
     private float lastSpecialAttackingTime = 0f;
 
+    // SPECIAL ATTACK'S RELATED ATTRIBUTES.
+    [SerializeField]
+    private Transform firePoint;
+    [SerializeField]
+    private GameObject laserPrefab;
+    private float laserSpeed = 20f;
+
     // LOGICAL ATTRIBUTES TO CHECK WHETHER THE PLAYER IS TRYING TO DO SOMETHING OR NOT.
     [SerializeField]
     private bool isDashButtonDown = false;
 
     // Static player which is initialized only once at the start of the game.
     public static PlayerManager player;
-    public GameObject deathPanelScreen;
-    public GameObject victoryPanelScreen;
 
     // Start is called before the first frame update
     public void Start()
     {
         player = this;
         myRigidBody = GetComponent<Rigidbody2D>();
+        myCapsuleCollider = GetComponent<CapsuleCollider2D>();
         myAnimator = GetComponent<Animator>();
     }
 
@@ -184,6 +191,7 @@ public class PlayerManager : Player, PlayerAction
             this.Exp -= 5 + (threshold * (this.Level - 1));
             this.HP += 10;
             this.Attack += 1;
+            this.Defense += 1;
             this.Level++;
             Debug.Log("Level up! Now your level is " + this.Level);
         }
@@ -201,19 +209,92 @@ public class PlayerManager : Player, PlayerAction
 
     public IEnumerator SpecialAttacking()
     {
-        if (currentTime - lastSpecialAttackingTime < 5f)
+        if (currentTime - lastSpecialAttackingTime < 1f)
         {
             yield break;
         }
-        float lastAtk = this.Attack;
-        this.Attack += 5;
-        myAnimator.SetBool("isAttacking", true);
-        currentPlayerState = PLAYER_STATE.Attack;
 
-        yield return null;
-        myAnimator.SetBool("isAttacking", false);
-        yield return new WaitForSeconds(.6666667f);
-        this.Attack = lastAtk;
+        if (this.movement.x == 1 & this.movement.y == 1) {
+            firePoint = this.gameObject.transform.Find("FireRight");
+
+            GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+            laser.transform.localRotation = Quaternion.Euler(0, 0, -45);
+            Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+
+            Physics2D.IgnoreCollision(myCapsuleCollider, laser.GetComponent<Collider2D>());
+
+            rb.AddForce(moveDirection.normalized * laserSpeed, ForceMode2D.Impulse);
+        } else if (this.movement.x == 1 & this.movement.y == 0) {
+            firePoint = this.gameObject.transform.Find("FireRight");
+
+            GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+            laser.transform.localRotation = Quaternion.Euler(0, 0, -90);
+            Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+
+            Physics2D.IgnoreCollision(myCapsuleCollider, laser.GetComponent<Collider2D>());
+            
+            rb.AddForce(moveDirection.normalized * laserSpeed, ForceMode2D.Impulse);
+        } else if (this.movement.x == 1 && this.movement.y == -1) {
+            firePoint = this.gameObject.transform.Find("FireRight");
+
+            GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+            laser.transform.localRotation = Quaternion.Euler(0, 0, -135);
+            Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+
+            Physics2D.IgnoreCollision(myCapsuleCollider, laser.GetComponent<Collider2D>());
+            
+            rb.AddForce(moveDirection.normalized * laserSpeed, ForceMode2D.Impulse);
+        } else if (this.movement.x == 0 && this.movement.y == -1) {
+            firePoint = this.gameObject.transform.Find("FireDown");
+
+            GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+            laser.transform.localRotation = Quaternion.Euler(0, 0, -180);
+            Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+
+            Physics2D.IgnoreCollision(myCapsuleCollider, laser.GetComponent<Collider2D>());
+            
+            rb.AddForce(moveDirection.normalized * laserSpeed, ForceMode2D.Impulse);
+        } else if (this.movement.x == -1 && this.movement.y == -1) {
+            firePoint = this.gameObject.transform.Find("FireLeft");
+
+            GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+            laser.transform.localRotation = Quaternion.Euler(0, 0, -225);
+            Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+
+            Physics2D.IgnoreCollision(myCapsuleCollider, laser.GetComponent<Collider2D>());
+            
+            rb.AddForce(moveDirection.normalized * laserSpeed, ForceMode2D.Impulse);
+        } else if (this.movement.x == -1 && this.movement.y == 0) {
+            firePoint = this.gameObject.transform.Find("FireLeft");
+
+            GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+            laser.transform.localRotation = Quaternion.Euler(0, 0, -270);
+            Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+
+            Physics2D.IgnoreCollision(myCapsuleCollider, laser.GetComponent<Collider2D>());
+            
+            rb.AddForce(moveDirection.normalized * laserSpeed, ForceMode2D.Impulse);
+        } else if (this.movement.x == -1 && this.movement.y == 1) {
+            firePoint = this.gameObject.transform.Find("FireLeft");
+
+            GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+            laser.transform.localRotation = Quaternion.Euler(0, 0, -315);
+            Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+
+            Physics2D.IgnoreCollision(myCapsuleCollider, laser.GetComponent<Collider2D>());
+            
+            rb.AddForce(moveDirection.normalized * laserSpeed, ForceMode2D.Impulse);
+        } else if (this.movement.x == 0 && this.movement.y == 1) {
+            firePoint = this.gameObject.transform.Find("FireUp");
+
+            GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+            laser.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+
+            Physics2D.IgnoreCollision(myCapsuleCollider, laser.GetComponent<Collider2D>());
+            
+            rb.AddForce(moveDirection.normalized * laserSpeed, ForceMode2D.Impulse);
+        }        
 
         currentPlayerState = PLAYER_STATE.Walk;
         lastSpecialAttackingTime = Time.time;

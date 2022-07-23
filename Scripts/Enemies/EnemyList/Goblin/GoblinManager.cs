@@ -36,28 +36,32 @@ public class GoblinManager : Goblin, EnemyAction
         {
             this.AutoMoving();
             this.AnimatingGoblin();
-        } 
+        }
 
-        if (this.CurrentTime - this.LastAttackingTime >= 0.3333334f) {
+        if (this.CurrentTime - this.LastAttackingTime >= 0.3333334f)
+        {
             alreadyHasBeenCollided = false;
         }
     }
 
     void FixedUpdate()
     {
-        if (alreadyHasBeenCollided == true) {
+        if (alreadyHasBeenCollided == true)
+        {
             enemyRigidBody.velocity = Vector2.zero;
             enemyRigidBody.AddForce(this.Difference * this.Thurst, ForceMode2D.Impulse);
-            CanDealDamage = false;
-        } else {
+        }
+        else
+        {
             enemyRigidBody.velocity = this.MoveDirection * Speed;
         }
     }
 
     public void AutoMoving()
     {
-        if (this.goblinState == ENEMY_STATE.Attack) {
-            return ;
+        if (this.goblinState == ENEMY_STATE.Attack)
+        {
+            return;
         }
         if (this.LastMovingTime == 0f)
         {
@@ -195,14 +199,19 @@ public class GoblinManager : Goblin, EnemyAction
         }
     }
 
-    public void AnimatingGoblin() {
-        if (this.goblinState != ENEMY_STATE.Attack) {
+    public void AnimatingGoblin()
+    {
+        if (this.goblinState != ENEMY_STATE.Attack)
+        {
             this.goblinAnimator.SetBool("isAttacking", false);
         }
 
-        if (this.MoveDirection != Vector3.zero && this.goblinState == ENEMY_STATE.Walk) {
+        if (this.MoveDirection != Vector3.zero && this.goblinState == ENEMY_STATE.Walk)
+        {
             this.goblinAnimator.SetBool("isMoving", true);
-        } else if (this.goblinState == ENEMY_STATE.Idle) {
+        }
+        else if (this.goblinState == ENEMY_STATE.Idle)
+        {
             this.goblinAnimator.SetBool("isMoving", false);
         }
     }
@@ -232,10 +241,10 @@ public class GoblinManager : Goblin, EnemyAction
                 alreadyHasBeenCollided = true;
                 this.Difference = new Vector2(transform.position.x - PlayerManager.player.transform.position.x, transform.position.y - PlayerManager.player.transform.position.y);
 
-                this.HP -= (PlayerManager.player.Attack - this.Defense);
+                this.HP -= (PlayerManager.player.Attack - this.Defense <= 0) ? 0 : PlayerManager.player.Attack - this.Defense;
                 Debug.Log("You've dealing [" + (PlayerManager.player.Attack - this.Defense) + "] DMG to the enemy!!!");
                 this.CheckingHP();
-                this.LastAttackingTime = Time.time;      
+                this.LastAttackingTime = Time.time;
             }
         }
     }
@@ -248,29 +257,39 @@ public class GoblinManager : Goblin, EnemyAction
 
     public IEnumerator OnCollisionEnter2D(Collision2D collision)
     {
-            if (collision.gameObject.CompareTag("Player"))
-            {
-                CanDealDamage = true;   
-                yield return new WaitForSeconds(1f);
-                if (Vector3.Distance(target.position, transform.position) <= this.AttackRadius && this.CanDealDamage == true && ((this.CurrentTime - this.LastAttackingTime) >= 0.75f || this.LastAttackingTime == 0f))
-                {
-                    
-                    this.goblinAnimator.SetBool("isAttacking", true);
-                    this.goblinState = ENEMY_STATE.Attack;
-                    this.MoveDirection = Vector3.zero;
+        if (collision.gameObject.CompareTag("Player") && CanDealDamage == true)
+        {
+            this.CanDealDamage = false;
 
-                    float dmgTaken = this.Attack - PlayerManager.player.Defense + this.SpecialAttacking();
-                    PlayerManager.player.HP -= dmgTaken;
+            this.goblinAnimator.SetBool("isAttacking", true);
+            this.goblinState = ENEMY_STATE.Attack;
+            this.MoveDirection = Vector3.zero;
 
-                    Debug.Log("Player: - " + dmgTaken + "HP");
+            yield return null;
 
-                    this.LastAttackingTime = Time.time;
-                    this.CanDealDamage = false;
+            this.goblinAnimator.SetBool("isAttacking", false);
+            yield return new WaitForSeconds(0.65f);
+            if (Vector3.Distance(transform.position, target.position) <= this.AttackRadius) {
+                
+                float dmgTaken = this.Attack - PlayerManager.player.Defense + this.SpecialAttacking();
+                PlayerManager.player.HP -= ((dmgTaken <= 0) ? 0 : dmgTaken);
 
-                    yield return new WaitForSeconds(0.6666667f);
-                    this.goblinState = ENEMY_STATE.Idle;
-                } 
-            }    
+                Debug.Log("Player: - " + dmgTaken + "HP");
+            } 
+
+            this.LastAttackingTime = Time.time;
+            this.CanDealDamage = true;
+
+            yield return new WaitForSeconds(0.6666667f);
+            this.goblinState = ENEMY_STATE.Idle;
+
+        }
+
+        if (collision.gameObject.CompareTag("Player Special Attack")) {
+            this.HP -= (PlayerManager.player.Attack * 2 - this.Defense);
+            Debug.Log("You've dealing [" + (PlayerManager.player.Attack * 2 - this.Defense) + "] DMG to the enemy!!!");
+            this.CheckingHP();
+        }
     }
 
     // SPECIAL ATTACK PATTERN OF THE ENEMY
@@ -309,10 +328,10 @@ public class GoblinManager : Goblin, EnemyAction
     public void DropItems()
     {
         int drop = Random.Range(1, 101);
-        if (drop % (3 + (int) (EnemyStatistic.hardness * 7/2)) == 0)
+        if (drop % (3 + (int)(EnemyStatistic.hardness * 7 / 2)) == 0)
         {
             Instantiate(this.randomDroppedItems[Random.Range(0, randomDroppedItems.Length)], this.transform.position, Quaternion.identity);
-        } 
+        }
     }
 }
 

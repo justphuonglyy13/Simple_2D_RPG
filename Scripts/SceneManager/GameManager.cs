@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
         set { _charIndex = value; }
     }
 
-    private void Awake() {
+    public void Awake() {
         if(instance == null) {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -38,6 +38,6 @@ public class GameManager : MonoBehaviour
         if(scene.name == "Map1" && player == null) {
             
             player = Instantiate(players[CharIndex]);
-        }
+        } 
     }
 }

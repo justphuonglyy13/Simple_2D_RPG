@@ -6,12 +6,14 @@ public class WalkableTreeHealthBar : HealthBar
 {
     private WalkableTree walkableTree;
     private Transform healthBarTransform;
+    private float maxHP;
     // Start is called before the first frame update
     protected override void Start() 
     {
         healthBarTransform = gameObject.GetComponent<Transform>();
         walkableTree = gameObject.GetComponentInParent<WalkableTreeManager>();
-        this.getHP((float) walkableTree.HP, 20f);
+        maxHP = walkableTree.HP;
+        this.getHP((float) walkableTree.HP, maxHP);
         base.Start();
         if (walkableTree.IsFlipped == true) {
             healthBarTransform.localScale = new Vector3(-1f, 1f, 1f);
@@ -24,7 +26,7 @@ public class WalkableTreeHealthBar : HealthBar
     // Update is called once per frame
     protected override void Update()
     {
-        this.getHP((float) walkableTree.HP, 20f);
+        this.getHP((float) walkableTree.HP, maxHP);
         base.Update();   
         if (walkableTree.IsFlipped == true) {
             healthBarTransform.localScale = new Vector3(-1f, 1f, 1f);

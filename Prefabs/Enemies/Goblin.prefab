@@ -499,9 +499,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f256728d237f5046b8704dbf155b749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _HP: 20
   chaseRadius: 4
-  attackRadius: 2
+  attackRadius: 2.75
   randomDroppedItems:
   - {fileID: 5028059410001313509, guid: ac31092204c3b934cbcbdf2cd2d25fcb, type: 3}
   - {fileID: 1868656472565406206, guid: e2fec1ee881a1164e92754c0ead44d12, type: 3}

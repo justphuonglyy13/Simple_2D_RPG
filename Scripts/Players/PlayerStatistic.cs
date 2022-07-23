@@ -10,7 +10,7 @@ public enum PLAYER_STATE
     Dash,
 }
 
-public class PlayerStatistic : MonoBehaviour
+public abstract class PlayerStatistic : MonoBehaviour
 {
     [SerializeField]
     private float _HP;
@@ -70,17 +70,5 @@ public class PlayerStatistic : MonoBehaviour
         this.Speed = speed;
         this.Level = level;
         this.Exp = exp;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
