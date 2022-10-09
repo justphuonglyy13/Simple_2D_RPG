@@ -25,8 +25,8 @@ Game nhập vai 2D đơn giản (English description will be available soon)
 
 <li>Chọn độ khó để bắt đầu trò chơi.</li>
 <li>Tấn công đối thủ:
-    <li>Tấn công thường bằng kiếm (J).</li>
-    <li>Tấn công đặc biệt bằng tia laser (L).</li>
+    <li style="margin-left:20px;">Tấn công thường bằng kiếm (J).</li>
+    <li style="margin-left:20px;">Tấn công đặc biệt bằng tia laser (L).</li>
     <li>Di chuyển (A, W, S, D).</li>
 </li>
 <li>Lướt/ né một cự ly ngắn (K), không thể dịch chuyển xuyên vật thể hay kẹt vào vật thể khác.</li>
