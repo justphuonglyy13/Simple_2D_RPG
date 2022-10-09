@@ -23,12 +23,11 @@ Game nhập vai 2D đơn giản (English description will be available soon)
 
 <h4>Trò chơi có các tính năng sau</h4>
 
-<li></li>
 <li>Chọn độ khó để bắt đầu trò chơi.</li>
 <li>Tấn công đối thủ:
     <li>Tấn công thường bằng kiếm (J).</li>
     <li>Tấn công đặc biệt bằng tia laser (L).</li>
-Di chuyển (A, W, S, D).
+    <li>Di chuyển (A, W, S, D).</li>
 </li>
 <li>Lướt/ né một cự ly ngắn (K), không thể dịch chuyển xuyên vật thể hay kẹt vào vật thể khác.</li>
 <li>Nhặt vật phẩm có tỷ lệ rớt ra từ việc hạ gục quái, gồm có các vật phẩm sau:
