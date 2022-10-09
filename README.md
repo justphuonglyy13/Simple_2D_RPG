@@ -1,11 +1,7 @@
 # Simple_2D_RPG
+Game nhập vai 2D đơn giản (English description will be available soon)
 
-## Basic Guide
-<br>
--> A, S, D, W: Move character
-<br>
--> J: Attack
-<br>
--> K: Dash
-<br>
--> L: Special Attack (still in developing progress)
+## Giới thiệu
+
+
+<h2>Đây là một project của môn Lập trình hướng đối tượng</h2>
