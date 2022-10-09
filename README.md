@@ -23,29 +23,20 @@ Game nhập vai 2D đơn giản (English description will be available soon)
 
 <h4>Trò chơi có các tính năng sau</h4>
 
-Chọn độ khó để bắt đầu trò chơi.
-<br>
-Tấn công đối thủ:
-<br>
-    •	Tấn công thường bằng kiếm (J).
-    <br>
-    •	Tấn công đặc biệt bằng tia laser (L).
+<li></li>
+<li>Chọn độ khó để bắt đầu trò chơi.</li>
+<li>Tấn công đối thủ:
+    <li>Tấn công thường bằng kiếm (J).</li>
+    <li>Tấn công đặc biệt bằng tia laser (L).</li>
 Di chuyển (A, W, S, D).
-<br>
-Lướt/ né một cự ly ngắn (K), không thể dịch chuyển xuyên vật thể hay kẹt vào vật thể khác.
-<br>
-Nhặt vật phẩm có tỷ lệ rớt ra từ việc hạ gục quái, gồm có các vật phẩm sau:
-<br>
-    •	Sách: tăng EXP(kinh nghiệm).
-    <br>
-    •	Trái tim: hồi phục HP(máu).
-    <br>
-    •	Vàng: tăng ATK(tấn công).
-<br>
-Chuyển map (đi vào vùng thay đổi map trên bản đồ).
-<br>
-Đánh boss (map đánh boss, không có cửa trở lại).
-<br>
-Hiện màn hình thất bại khi máu người chơi xuống 0HP, hiện màn hình chiến thắng khi người chơi đánh bại Boss.
-<br>
-Bắt đầu lại trò chơi sau khi màn chơi kết thúc (chiến thắng/ thất bại).
+</li>
+<li>Lướt/ né một cự ly ngắn (K), không thể dịch chuyển xuyên vật thể hay kẹt vào vật thể khác.</li>
+<li>Nhặt vật phẩm có tỷ lệ rớt ra từ việc hạ gục quái, gồm có các vật phẩm sau:
+    <li>Sách: tăng EXP(kinh nghiệm).</li>
+    <li>Trái tim: hồi phục HP(máu).</li>
+    <li>Vàng: tăng ATK(tấn công).</li>
+</li>
+<li>Chuyển map (đi vào vùng thay đổi map trên bản đồ).</li>
+<li>Đánh boss (map đánh boss, không có cửa trở lại).</li>
+<li>Hiện màn hình thất bại khi máu người chơi xuống 0HP, hiện màn hình chiến thắng khi người chơi đánh bại Boss.</li>
+<li>Bắt đầu lại trò chơi sau khi màn chơi kết thúc (chiến thắng/ thất bại).</li>
